@@ -300,7 +300,7 @@ class Utility
         preg_match('#(^.*?)_#', $value, $matches);
         $infos['extension'] = $matches[1] ?? '';
 
-        if ($type === 'plugin') {
+        if ($type === 'plugin' && isset($GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'])) {
             foreach ($GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] as $itemValue) {
                 // v12
                 if (trim($itemValue['value'] ?? '') === $value) {
@@ -332,7 +332,7 @@ class Utility
                     $infos['iconext'] = PathUtility::getPublicResourceWebPath($iconPath);
                 } elseif ($iconRegistry->isRegistered($iconPath)) {
                     $icon = $iconRegistry->getIconConfigurationByIdentifier($iconPath);
-                    if (isset($icon['options']) && str_contains($icon['options']['source'], 'EXT:')) {
+                    if (isset($icon['options']) && isset($icon['options']['source']) && str_contains($icon['options']['source'], 'EXT:')) {
                         $infos['iconext'] = PathUtility::getPublicResourceWebPath($icon['options']['source']);
                     } elseif (isset($icon['options']['source'])) {
                         $infos['iconext'] = PathUtility::getAbsoluteWebPath($icon['options']['source']);
